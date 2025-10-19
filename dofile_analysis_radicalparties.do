@@ -1,6 +1,6 @@
 *POPPA analysis**
 
-use "D:\Anto\Analysis of Democracy\TIPSA\POPPA\poppa_integrated.dta" 
+use "poppa_integrated.dta" 
 
 decode country, gen(country_name)
 
@@ -93,5 +93,6 @@ eststo: reg vote_share treatment
 eststo: xtreg vote_share farright if treatment == 1
 eststo: reg D.vote_share treatment
 eststo: reg D.vote_share treatment i.ISOcountry farright
+
 
 esttab using partybanned.rtf, replace se r2 ar2  label scalars(rmse) drop(*.ISOcountry)
