@@ -37,28 +37,28 @@ keep if inlist(ISOcountry, 56, 203, 642, 703)
 drop if ISOcountry == 56 & party_name_short == "VB"
 drop if ISOcountry == 703 & party_name_short == "L'SNS"
 
-save "D:\Anto\Analysis of Democracy\TIPSA\The PopuList\ThePopuList_controls"
+save "D:\RadicalParties_DiD\ThePopuList_controls"
 
 **Merge with my resulting list of banned parties**
 
-import excel "D:\Anto\Analysis of Democracy\TIPSA\banned_parties", sheet("parties") firstrow clear
+import excel "https://github.com/apaparini/RadicalParties_DiD/blob/6bf62408ef8cd9d0f24f257f50ddb7bd2e5d11e5/banned_parties.xlsx", sheet("parties") firstrow clear
 
-merge 1:1 ISOcountry party_name using  "D:\Anto\Analysis of Democracy\TIPSA\The PopuList\ThePopuList_controls"
+merge 1:1 ISOcountry party_name using  "D:\RadicalParties_DiD\ThePopuList_controls"
 
 recode ban (. = 0)
 
 keep party_name country_name party_name_english party_name_short farright farleft ISOcountry ban
 
-save "D:\Anto\Analysis of Democracy\TIPSA\controls+banned"
+save "D:\RadicalParties_DiD\controls+banned"
 
 **ïntegrate with the electoral support database**
 
-import excel "D:\Anto\Analysis of Democracy\TIPSA\Paty bans\electoral_support", sheet("results") firstrow clear
+import excel "https://github.com/apaparini/RadicalParties_DiD/blob/6bf62408ef8cd9d0f24f257f50ddb7bd2e5d11e5/electoral_support.xlsx", sheet("results") firstrow clear
 
 kountry country, from(other) stuck
 gen ISOcountry= _ISO3N_
 
-merge m:1 ISOcountry party_name_short using "D:\Anto\Analysis of Democracy\TIPSA\controls+banned"
+merge m:1 ISOcountry party_name_short using "D:\RadicalParties_DiD\controls+banned"
 
 keep if _merge == 3
 drop _merge
@@ -96,4 +96,5 @@ eststo: reg D.vote_share treatment i.ISOcountry farright
 
 
 esttab using partybanned.rtf, replace se r2 ar2  label scalars(rmse) drop(*.ISOcountry)
+
 
