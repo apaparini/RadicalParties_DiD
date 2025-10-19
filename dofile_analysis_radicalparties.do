@@ -1,6 +1,6 @@
 *POPPA analysis**
 
-use "poppa_integrated.dta" 
+use "https://github.com/apaparini/RadicalParties_DiD/blob/200f6c6c117f45e8df21989a158dd5c9a14bf648/poppa_integrated.dta" 
 
 decode country, gen(country_name)
 
@@ -96,3 +96,4 @@ eststo: reg D.vote_share treatment i.ISOcountry farright
 
 
 esttab using partybanned.rtf, replace se r2 ar2  label scalars(rmse) drop(*.ISOcountry)
+
